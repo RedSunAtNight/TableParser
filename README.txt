@@ -11,7 +11,7 @@ III	HOW TO USE THESE CLASSES
 III	SUMMARY OF CLASSES
 
 PURPOSE: 
-This project will read a text file containing a flat table of data, and parse the data into columns. The column delimiter can be set manually, or guessed automatically by the code.
+The classes contained here will read a text file containing a flat table of data, and parse the data into columns so that the data can be used in a C++ program. The column delimiter can be set manually, or guessed automatically by the code.
 
 REQUIREMENTS: 
 This program makes use of the following Boost libraries: lexical_cast and regex. In order to use boost/regex, the code must be linked with libboost_regex.so. The code should be compiled with the flag -lboost_regex
