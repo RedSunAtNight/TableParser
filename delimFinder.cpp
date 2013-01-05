@@ -61,7 +61,7 @@ int DelimFinder::guessDelim()
             {
                 //cout << "\t" << occurrenceList[initInd] << " does not match " << lastRowOccrs << endl;
                 allMatched = false;
-                initInd = 99999999999999;
+                initInd = occurrenceList.size() + 1;
             }
             //else { cout << "\t" << occurrenceList[initInd] << " matches " << lastRowOccrs << endl; }
             initInd++;
@@ -124,14 +124,6 @@ int DelimFinder::guessDelim()
         callingReader.numCols = numDelimsPerRow + 1;
         return 2;
     }
-    // Commas get priority over periods
-    // Do this one later
-    //tuple<bool, int> isPers = searchDelims('.');
-    //tuple<bool, int> isComs = searhDelims(',');
-    //if (get<0>isPers && get<0>isComs)
-    //{
-        //delimList.erase
-    //}
     // If there are two possiblities, and if each occurs more than once, AND one occurs one more time than the other, the one that occurs one less time is probably the delimiter
     // This corresponds to the one that occurs the most being part of the entry in each cell
     if (delimList.size() == 2 && delimList[0].getOccurrences()[0] > 1 && delimList[1].getOccurrences()[0] > 1 && (delimList[0].getOccurrences()[0] == delimList[1].getOccurrences()[0] + 1) )
@@ -203,6 +195,16 @@ int DelimFinder::guessDelim()
             else { y++; } // end of what to do if the character is not the right fit
         } // end of for loop
     } // end of if block -- what to do if the max-occurring character is single quotes
+    // Commas get priority over periods
+    tuple<bool, int> isPers = searchDelims('.');
+    tuple<bool, int> isComs = searhDelims(',');
+    if (get<0>isPers && get<0>isComs)
+    {
+        callingReader.delim = ",";
+        int numDelimsPerRow = delimList[get<1>(isComs)].getOccurrences()[0];
+        callingReader.numCols = numDelimsPerRow + 1;
+        return 2;
+    }
 
     // Okay, if you've gotten all the way to here and you still haven't returned a value, time to do the defaul behavior:
     // select the possible delim that occurs the most as the delimiter
